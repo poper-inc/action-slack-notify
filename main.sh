@@ -5,8 +5,11 @@ export SLACK_ICON=${SLACK_ICON:-"https://avatars0.githubusercontent.com/u/437421
 export SLACK_USERNAME=${SLACK_USERNAME:-"rtBot"}
 export CI_SCRIPT_OPTIONS="ci_script_options"
 export SLACK_TITLE=${SLACK_TITLE:-"Message"}
-export COMMIT_MESSAGE=$(cat "$GITHUB_EVENT_PATH" | jq -r '.commits[-1].message')
-export GITHUB_ACTOR=${SLACK_MSG_AUTHOR:-"$GITHUB_ACTOR"}
+export COMMIT_MESSAGE=$(cat "$GITHUB_EVENT_PATH" | jq -r '.head_commit.message')
+export GITHUB_LAST_COMMIT_MESSAGE=$(git -C $GITHUB_WORKSPACE show-branch --no-name HEAD)
+export GITHUB_LAST_COMMIT_AUTHOR=$(git -C $GITHUB_WORKSPACE log -1 --pretty=format:'%an')
+export GITHUB_LAST_COMMIT_LONG_SHA=$(git -C $GITHUB_WORKSPACE rev-parse HEAD)
+export GITHUB_LAST_COMMIT_SHORT_SHA=$(git -C $GITHUB_WORKSPACE rev-parse --short HEAD)
 
 hosts_file="$GITHUB_WORKSPACE/.github/hosts.yml"
 

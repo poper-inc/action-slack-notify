@@ -10,20 +10,24 @@ import (
 )
 
 const (
-	EnvSlackWebhook   = "SLACK_WEBHOOK"
-	EnvSlackIcon      = "SLACK_ICON"
-	EnvSlackIconEmoji = "SLACK_ICON_EMOJI"
-	EnvSlackChannel   = "SLACK_CHANNEL"
-	EnvSlackTitle     = "SLACK_TITLE"
-	EnvSlackMessage   = "SLACK_MESSAGE"
-	EnvSlackColor     = "SLACK_COLOR"
-	EnvSlackUserName  = "SLACK_USERNAME"
-	EnvSlackFooter    = "SLACK_FOOTER"
-	EnvGithubActor    = "GITHUB_ACTOR"
-	EnvSiteName       = "SITE_NAME"
-	EnvHostName       = "HOST_NAME"
-	EnvMinimal        = "MSG_MINIMAL"
-	EnvSlackLinkNames = "SLACK_LINK_NAMES"
+	EnvSlackWebhook             = "SLACK_WEBHOOK"
+	EnvSlackIcon                = "SLACK_ICON"
+	EnvSlackIconEmoji           = "SLACK_ICON_EMOJI"
+	EnvSlackChannel             = "SLACK_CHANNEL"
+	EnvSlackTitle               = "SLACK_TITLE"
+	EnvSlackMessage             = "SLACK_MESSAGE"
+	EnvSlackColor               = "SLACK_COLOR"
+	EnvSlackUserName            = "SLACK_USERNAME"
+	EnvSlackFooter              = "SLACK_FOOTER"
+	EnvGithubActor              = "GITHUB_ACTOR"
+	EnvGithubLastCommitAuthor   = "GITHUB_LAST_COMMIT_AUTHOR"
+	EnvGithubLastCommitMessage  = "GITHUB_LAST_COMMIT_MESSAGE"
+	EnvGithubLastCommitLongSHA  = "GITHUB_LAST_COMMIT_LONG_SHA"
+	EnvGithubLastCommitShortSHA = "GITHUB_LAST_COMMIT_SHORT_SHA"
+	EnvSiteName                 = "SITE_NAME"
+	EnvHostName                 = "HOST_NAME"
+	EnvMinimal                  = "MSG_MINIMAL"
+	EnvSlackLinkNames           = "SLACK_LINK_NAMES"
 )
 
 type Webhook struct {
@@ -69,8 +73,8 @@ func main() {
 		os.Setenv("GITHUB_WORKFLOW", "Link to action run")
 	}
 
-	long_sha := os.Getenv("GITHUB_SHA")
-	commit_sha := long_sha[0:6]
+	// long_sha := os.Getenv("GITHUB_SHA")
+	// commit_sha := long_sha[0:6]
 
 	minimal := os.Getenv(EnvMinimal)
 	fields := []Field{}
@@ -124,8 +128,8 @@ func main() {
 			case "commit":
 				field := []Field{
 					{
-						Title: "Commit",
-						Value: "<" + os.Getenv("GITHUB_SERVER_URL") + "/" + os.Getenv("GITHUB_REPOSITORY") + "/commit/" + os.Getenv("GITHUB_SHA") + "|" + commit_sha + ">",
+						Title: "Last Commit Message: " + envOr(EnvGithubLastCommitMessage, "Commit"),
+						Value: "<" + os.Getenv("GITHUB_SERVER_URL") + "/" + os.Getenv("GITHUB_REPOSITORY") + "/commit/" + os.Getenv("GITHUB_LAST_COMMIT_LONG_SHA") + "|" + os.Getenv("GITHUB_LAST_COMMIT_SHORT_SHA") + ">",
 						Short: true,
 					},
 				}
@@ -150,8 +154,8 @@ func main() {
 				Short: true,
 			},
 			{
-				Title: "Commit",
-				Value: "<" + os.Getenv("GITHUB_SERVER_URL") + "/" + os.Getenv("GITHUB_REPOSITORY") + "/commit/" + os.Getenv("GITHUB_SHA") + "|" + commit_sha + ">",
+				Title: "Last Commit Message: " + envOr(EnvGithubLastCommitMessage, "Commit"),
+				Value: "<" + os.Getenv("GITHUB_SERVER_URL") + "/" + os.Getenv("GITHUB_REPOSITORY") + "/commit/" + os.Getenv("GITHUB_LAST_COMMIT_LONG_SHA") + "|" + os.Getenv("GITHUB_LAST_COMMIT_SHORT_SHA") + ">",
 				Short: true,
 			},
 			{
@@ -202,10 +206,10 @@ func main() {
 			{
 				Fallback:   envOr(EnvSlackMessage, "GITHUB_ACTION="+os.Getenv("GITHUB_ACTION")+" \n GITHUB_ACTOR="+os.Getenv("GITHUB_ACTOR")+" \n GITHUB_EVENT_NAME="+os.Getenv("GITHUB_EVENT_NAME")+" \n GITHUB_REF="+os.Getenv("GITHUB_REF")+" \n GITHUB_REPOSITORY="+os.Getenv("GITHUB_REPOSITORY")+" \n GITHUB_WORKFLOW="+os.Getenv("GITHUB_WORKFLOW")),
 				Color:      color,
-				AuthorName: envOr(EnvGithubActor, ""),
-				AuthorLink: os.Getenv("GITHUB_SERVER_URL") + "/" + os.Getenv(EnvGithubActor),
-				AuthorIcon: os.Getenv("GITHUB_SERVER_URL") + "/" + os.Getenv(EnvGithubActor) + ".png?size=32",
-				Footer:     envOr(EnvSlackFooter, "<https://github.com/rtCamp/github-actions-library|Powered By rtCamp's GitHub Actions Library>"),
+				AuthorName: "Last Commit Author: " + envOr(EnvGithubLastCommitAuthor, ""),
+				AuthorLink: os.Getenv("GITHUB_SERVER_URL") + "/" + os.Getenv(EnvGithubLastCommitAuthor),
+				AuthorIcon: os.Getenv("GITHUB_SERVER_URL") + "/" + os.Getenv(EnvGithubLastCommitAuthor) + ".png?size=32",
+				Footer:     envOr(EnvSlackFooter, "<https://github.com/poper-inc/action-slack-notify|Powered By poper-inc's gitHub actions library>"),
 				Fields:     fields,
 			},
 		},

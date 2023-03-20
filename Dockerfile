@@ -1,13 +1,14 @@
-FROM golang:1.14-alpine3.11@sha256:6578dc0c1bde86ccef90e23da3cdaa77fe9208d23c1bb31d942c8b663a519fa5 AS builder
+FROM golang:1.18.10-alpine AS builder
 
 LABEL "com.github.actions.icon"="bell"
 LABEL "com.github.actions.color"="yellow"
 LABEL "com.github.actions.name"="Slack Notify"
 LABEL "com.github.actions.description"="This action will send notification to Slack"
-LABEL "org.opencontainers.image.source"="https://github.com/rtCamp/action-slack-notify"
+LABEL "org.opencontainers.image.source"="https://github.com/poper-inc/action-slack-notify"
 
-WORKDIR ${GOPATH}/src/github.com/rtcamp/action-slack-notify
-COPY main.go ${GOPATH}/src/github.com/rtcamp/action-slack-notify
+WORKDIR ${GOPATH}/src/github.com/poper-inc/action-slack-notify
+COPY main.go ${GOPATH}/src/github.com/poper-inc/action-slack-notify
+COPY go.mod ${GOPATH}/src/github.com/poper-inc/action-slack-notify
 
 ENV CGO_ENABLED 0
 ENV GOOS linux
@@ -26,6 +27,7 @@ RUN apk update \
 	&& apk upgrade \
 	&& apk add \
 	bash \
+	git \
 	jq \
 	ca-certificates \
 	python \
