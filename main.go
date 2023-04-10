@@ -30,6 +30,7 @@ const (
 	EnvSlackLinkNames           = "SLACK_LINK_NAMES"
 	EnvTestDuration             = "TEST_DURATION"
 	EnvTestStart                = "TEST_START"
+	EnvTestSummary              = "TEST_SUMMARY"
 )
 
 type Webhook struct {
@@ -84,7 +85,7 @@ func main() {
 		mainFields := []Field{
 			{
 				Title: os.Getenv(EnvSlackTitle),
-				Value: envOr(EnvSlackMessage, "EOM"),
+				Value: envOr(EnvTestSummary, "EOM"),
 				Short: false,
 			},
 		}
@@ -94,7 +95,7 @@ func main() {
 		mainFields := []Field{
 			{
 				Title: os.Getenv(EnvSlackTitle),
-				Value: envOr(EnvSlackMessage, "EOM"),
+				Value: envOr(EnvTestSummary, "EOM"),
 				Short: false,
 			},
 		}
@@ -162,7 +163,7 @@ func main() {
 			},
 			{
 				Title: os.Getenv(EnvSlackTitle),
-				Value: envOr(EnvSlackMessage, "EOM"),
+				Value: envOr(EnvTestSummary, "EOM"),
 				Short: false,
 			},
 		}
@@ -206,7 +207,7 @@ func main() {
 		LinkNames: os.Getenv(EnvSlackLinkNames),
 		Attachments: []Attachment{
 			{
-				Fallback:   envOr(EnvSlackMessage, "GITHUB_ACTION="+os.Getenv("GITHUB_ACTION")+" \n GITHUB_ACTOR="+os.Getenv("GITHUB_ACTOR")+" \n GITHUB_EVENT_NAME="+os.Getenv("GITHUB_EVENT_NAME")+" \n GITHUB_REF="+os.Getenv("GITHUB_REF")+" \n GITHUB_REPOSITORY="+os.Getenv("GITHUB_REPOSITORY")+" \n GITHUB_WORKFLOW="+os.Getenv("GITHUB_WORKFLOW")),
+				Fallback:   envOr(EnvTestSummary, "GITHUB_ACTION="+os.Getenv("GITHUB_ACTION")+" \n GITHUB_ACTOR="+os.Getenv("GITHUB_ACTOR")+" \n GITHUB_EVENT_NAME="+os.Getenv("GITHUB_EVENT_NAME")+" \n GITHUB_REF="+os.Getenv("GITHUB_REF")+" \n GITHUB_REPOSITORY="+os.Getenv("GITHUB_REPOSITORY")+" \n GITHUB_WORKFLOW="+os.Getenv("GITHUB_WORKFLOW")),
 				Color:      color,
 				AuthorName: "Last Commit Author: " + envOr(EnvGithubLastCommitAuthor, ""),
 				AuthorLink: os.Getenv("GITHUB_SERVER_URL") + "/" + os.Getenv(EnvGithubLastCommitAuthor),
