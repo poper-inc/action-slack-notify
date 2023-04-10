@@ -28,6 +28,8 @@ const (
 	EnvHostName                 = "HOST_NAME"
 	EnvMinimal                  = "MSG_MINIMAL"
 	EnvSlackLinkNames           = "SLACK_LINK_NAMES"
+	EnvTestDuration             = "TEST_DURATION"
+	EnvTestStart                = "TEST_START"
 )
 
 type Webhook struct {
@@ -98,20 +100,20 @@ func main() {
 		}
 		for _, requiredField := range requiredFields {
 			switch strings.ToLower(requiredField) {
-			case "ref":
+			case "duration":
 				field := []Field{
 					{
-						Title: "Ref",
-						Value: os.Getenv("GITHUB_REF"),
+						Title: "Duration",
+						Value: os.Getenv("TEST_DURATION"),
 						Short: true,
 					},
 				}
 				mainFields = append(field, mainFields...)
-			case "event":
+			case "start":
 				field := []Field{
 					{
-						Title: "Event",
-						Value: os.Getenv("GITHUB_EVENT_NAME"),
+						Title: "Start",
+						Value: os.Getenv("TEST_START"),
 						Short: true,
 					},
 				}
@@ -140,12 +142,12 @@ func main() {
 	} else {
 		mainFields := []Field{
 			{
-				Title: "Ref",
-				Value: os.Getenv("GITHUB_REF"),
+				Title: "Duration",
+				Value: os.Getenv("TEST_DURATION"),
 				Short: true,
 			}, {
-				Title: "Event",
-				Value: os.Getenv("GITHUB_EVENT_NAME"),
+				Title: "Start",
+				Value: os.Getenv("TEST_START"),
 				Short: true,
 			},
 			{
@@ -240,7 +242,7 @@ func send(endpoint string, msg Webhook) error {
 	}
 
 	if res.StatusCode >= 299 {
-		return fmt.Errorf("Error on message: %s\n", res.Status)
+		return fmt.Errorf("error on message: %s", res.Status)
 	}
 	fmt.Println(res.Status)
 	return nil
