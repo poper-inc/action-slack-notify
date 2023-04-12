@@ -202,6 +202,7 @@ func main() {
 
 	msg := Webhook{
 		UserName:  os.Getenv(EnvSlackUserName),
+		Text:      "hello, <@" + os.Getenv("SLACK_AT_USERID") + ">",
 		IconURL:   os.Getenv(EnvSlackIcon),
 		IconEmoji: os.Getenv(EnvSlackIconEmoji),
 		Channel:   os.Getenv(EnvSlackChannel),
@@ -213,7 +214,6 @@ func main() {
 				AuthorName: "Last Commit Author: " + envOr(EnvGithubLastCommitAuthor, ""),
 				AuthorLink: os.Getenv("GITHUB_SERVER_URL") + "/" + os.Getenv(EnvGithubLastCommitAuthor),
 				AuthorIcon: os.Getenv("GITHUB_SERVER_URL") + "/" + os.Getenv(EnvGithubLastCommitAuthor) + ".png?size=32",
-				AtSomeone:  "<@" + os.Getenv("SLACK_AT_USERID") + ">",
 				Footer:     envOr(EnvSlackFooter, "<https://github.com/poper-inc/action-slack-notify|Powered By poper-inc's gitHub actions library>"),
 				Fields:     fields,
 			},
