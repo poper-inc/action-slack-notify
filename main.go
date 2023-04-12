@@ -52,6 +52,7 @@ type Attachment struct {
 	AuthorLink string  `json:"author_link,omitempty"`
 	AuthorIcon string  `json:"author_icon,omitempty"`
 	Footer     string  `json:"footer,omitempty"`
+	AtSomeone  string  `json:"at_someone,omitempty"`
 	Fields     []Field `json:"fields,omitempty"`
 }
 
@@ -212,6 +213,7 @@ func main() {
 				AuthorName: "Last Commit Author: " + envOr(EnvGithubLastCommitAuthor, ""),
 				AuthorLink: os.Getenv("GITHUB_SERVER_URL") + "/" + os.Getenv(EnvGithubLastCommitAuthor),
 				AuthorIcon: os.Getenv("GITHUB_SERVER_URL") + "/" + os.Getenv(EnvGithubLastCommitAuthor) + ".png?size=32",
+				AtSomeone:  "<@" + os.Getenv("SLACK_AT_USERID") + ">",
 				Footer:     envOr(EnvSlackFooter, "<https://github.com/poper-inc/action-slack-notify|Powered By poper-inc's gitHub actions library>"),
 				Fields:     fields,
 			},

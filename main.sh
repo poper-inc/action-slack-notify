@@ -3,6 +3,7 @@
 export GITHUB_BRANCH=${GITHUB_REF##*heads/}
 export SLACK_ICON=${SLACK_ICON:-"https://avatars0.githubusercontent.com/u/43742164"}
 export SLACK_USERNAME=${SLACK_USERNAME:-"rtBot"}
+export SLACK_AT_USERID=${SLACK_AT_USERID:-"userid"}
 export CI_SCRIPT_OPTIONS="ci_script_options"
 export SLACK_TITLE=${SLACK_TITLE:-"Message"}
 export COMMIT_MESSAGE=$(cat "$GITHUB_EVENT_PATH" | jq -r '.head_commit.message')
@@ -12,7 +13,7 @@ export GITHUB_LAST_COMMIT_LONG_SHA=$(git -C $GITHUB_WORKSPACE rev-parse HEAD)
 export GITHUB_LAST_COMMIT_SHORT_SHA=$(git -C $GITHUB_WORKSPACE rev-parse --short HEAD)
 export TEST_DURATION=$(( $(date +%s) - $START_SECS ))"s"
 export TIME_ZONE=${TIME_ZONE:-"UTC"}
-export TEST_START=$(TZ=$TIME_ZONE date --date @$START_SECS)
+export TEST_START=$(TZ=$TIME_ZONE date --date @$START_SECS +"%Y-%m-%d %H:%M:%S")
 
 echo "$SLACK_MESSAGE" >> coverage.txt
 if [[ $EXITCODE == "0" ]]; then
