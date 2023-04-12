@@ -201,8 +201,14 @@ func main() {
 	}
 
 	msg := Webhook{
-		UserName:  os.Getenv(EnvSlackUserName),
-		Text:      "hello, <@" + os.Getenv("SLACK_AT_USERID") + ">",
+		UserName: os.Getenv(EnvSlackUserName),
+		Text: func() (ret string) {
+			if os.Getenv("EXITCODE") == "0" {
+				return "hi, all tests passed"
+			} else {
+				return "hi, <@" + os.Getenv("SLACK_AT_USERID") + ">" + " something wrong in unit test"
+			}
+		}(),
 		IconURL:   os.Getenv(EnvSlackIcon),
 		IconEmoji: os.Getenv(EnvSlackIconEmoji),
 		Channel:   os.Getenv(EnvSlackChannel),
