@@ -204,9 +204,9 @@ func main() {
 		UserName: os.Getenv(EnvSlackUserName),
 		Text: func() (ret string) {
 			if os.Getenv("EXITCODE") == "0" {
-				return "hi, all tests passed"
+				return "*comiruAPI php unit-test*\nhi, all tests passed"
 			} else {
-				return "hi, <@" + os.Getenv("SLACK_AT_USERID") + ">" + " something wrong in unit test"
+				return "*comiruAPI php unit-test*\nhi, <@" + os.Getenv("SLACK_AT_USERID") + ">" + " something wrong in unit test"
 			}
 		}(),
 		IconURL:   os.Getenv(EnvSlackIcon),
