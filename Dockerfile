@@ -33,6 +33,7 @@ RUN apk update \
 	python \
 	py2-pip \
 	rsync && \
+        pip install pyyaml==5.1.2 && \
 	pip install shyaml && \
 	rm -rf /var/cache/apk/*
 
