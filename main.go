@@ -206,7 +206,8 @@ func main() {
 			if os.Getenv("EXITCODE") == "0" {
 				return "*comiruAPI php unit-test (Github Action)*\nhi, all tests passed"
 			} else {
-				return "*comiruAPI php unit-test (Github Action)*\nhi, <@" + os.Getenv("SLACK_AT_USERID") + ">" + " something wrong in unit test"
+				SLACK_AT_USERS := splitSlackUser(os.Getenv("SLACK_AT_USERID"), " ")
+				return "*comiruAPI php unit-test (Github Action)*\nhi, " + SLACK_AT_USERS + " something wrong in unit test"
 			}
 		}(),
 		IconURL:   os.Getenv(EnvSlackIcon),
@@ -255,4 +256,13 @@ func send(endpoint string, msg Webhook) error {
 	}
 	fmt.Println(res.Status)
 	return nil
+}
+
+func splitSlackUser(slackUser string, seprator string) string {
+	splittedSlackUsers := strings.Split(slackUser, seprator)
+	result := ""
+	for _, User := range splittedSlackUsers {
+		result += fmt.Sprintf("<@%s> ", User)
+	}
+	return result
 }
