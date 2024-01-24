@@ -24,6 +24,7 @@ const (
 	EnvGithubLastCommitMessage  = "GITHUB_LAST_COMMIT_MESSAGE"
 	EnvGithubLastCommitLongSHA  = "GITHUB_LAST_COMMIT_LONG_SHA"
 	EnvGithubLastCommitShortSHA = "GITHUB_LAST_COMMIT_SHORT_SHA"
+	EnvGithubRepoName           = "GITHUB_REPO_NAME"
 	EnvSiteName                 = "SITE_NAME"
 	EnvHostName                 = "HOST_NAME"
 	EnvMinimal                  = "MSG_MINIMAL"
@@ -204,10 +205,10 @@ func main() {
 		UserName: os.Getenv(EnvSlackUserName),
 		Text: func() (ret string) {
 			if os.Getenv("EXITCODE") == "0" {
-				return "*comiruAPI php unit-test (Github Action)*\nhi, all tests passed"
+				return "*" + os.Getenv(EnvGithubRepoName) + " php unit-test (Github Action)*\nhi, all tests passed"
 			} else {
 				SLACK_AT_USERS := splitSlackUser(os.Getenv("SLACK_AT_USERID"), " ")
-				return "*comiruAPI php unit-test (Github Action)*\nhi, " + SLACK_AT_USERS + " something wrong in unit test"
+				return "*" + os.Getenv(EnvGithubRepoName) + " php unit-test (Github Action)*\nhi, " + SLACK_AT_USERS + " something wrong in unit test"
 			}
 		}(),
 		IconURL:   os.Getenv(EnvSlackIcon),
