@@ -11,7 +11,7 @@ export GITHUB_LAST_COMMIT_MESSAGE=$(git -C $GITHUB_WORKSPACE show-branch --no-na
 export GITHUB_LAST_COMMIT_AUTHOR=$(git -C $GITHUB_WORKSPACE log -1 --pretty=format:'%an')
 export GITHUB_LAST_COMMIT_LONG_SHA=$(git -C $GITHUB_WORKSPACE rev-parse HEAD)
 export GITHUB_LAST_COMMIT_SHORT_SHA=$(git -C $GITHUB_WORKSPACE rev-parse --short HEAD)
-export GITHUB_REPO_NAME=$(basename $(git -C $GITHUB_WORKSPACE rev-parse --show-toplevel))
+export GITHUB_REPO_NAME=${GITHUB_REPOSITORY:-"poper-inc"}
 export TEST_DURATION=$(( $(date +%s) - $START_SECS ))"s"
 export TIME_ZONE=${TIME_ZONE:-"UTC"}
 export TEST_START=$(TZ=$TIME_ZONE date --date @$START_SECS +"%Y-%m-%d %H:%M:%S")
